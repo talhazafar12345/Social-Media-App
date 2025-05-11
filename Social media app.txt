@@ -1,0 +1,161 @@
+Index.html
+
+<br>
+
+<button type="button" class="btn btn-primary mb-4 p2" data-bs-toggle="modal" data-bs-target="#postModal">
+    Add Post
+  </button>
+
+  <button type="button" class="btn btn-primary mb-4 p2" data-bs-toggle="modal" data-bs-target="#postModal">
+    Add to cart
+  </button>
+
+  <button onclick="window.location.reload()" type="button" class="btn btn-primary mb-4 p2" data-bs-toggle="modal" data-bs-target="#postModal">
+    Delete all posts
+  </button>
+  
+
+  <!-- Post Cards Area -->
+  <div id="postsContainer" class="row g-4 mt-4"></div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="postModalLabel">Create New Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form id="postForm" enctype="multipart/form-data">
+          <div class="modal-body">
+
+            <!-- Post Image -->
+            <div class="mb-3">
+              <label for="postImage" class="form-label">Post Image</label>
+              <input class="form-control" type="file" id="postImage" name="postImage" accept="image/*" required>
+            </div>
+
+            <!-- Caption -->
+            <div class="mb-3">
+              <label for="caption" class="form-label">Caption</label>
+              <input type="text" class="form-control" id="caption" name="caption" placeholder="Enter caption" required>
+            </div>
+
+            <!-- Post Price -->
+            <div class="mb-3">
+              <label for="price" class="form-label">Post Price (PKR)</label>
+              <input type="number" class="form-control" id="price" name="price" placeholder="Enter price" min="0" required>
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Submit Post</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js
+"></script>
+<script src="app.js"></script>
+
+
+Style.CSS
+
+.p1{
+    text-align: center;
+margin-left: 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+    width: 298px  
+
+}
+
+.p2{
+   margin-left: 20px;
+}
+
+.a{
+    margin: 10px;
+    text-decoration: none;
+    color: brown;
+}
+
+
+
+App.JS
+
+document.getElementById("postForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const imageInput = document.getElementById("postImage");
+  const caption = document.getElementById("caption").value;
+  const price = document.getElementById("price").value;
+
+  const file = imageInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const imageUrl = e.target.result;
+
+    // Unique ID for the card
+    const postId = 'post-' + Date.now();
+
+    // Create card
+    const card = document.createElement("div");
+    card.className = "col-md-4";
+    card.id = postId;
+
+    card.innerHTML = `
+      <div class="card h-100 shadow-sm position-relative p1">
+        <!-- Three dots dropdown -->
+        <div class="dropdown position-absolute top-0 end-0 m-2">
+          <button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item text-danger" href="#" onclick="deletePost('${postId}')">Delete</a></li>
+          </ul>
+        </div>
+
+        <img src="${imageUrl}" class="card-img-top" alt="Post Image ">
+        <div class="card-body">
+          <h5 class="card-title">${caption}</h5>
+          <p class="card-text">Price: PKR ${price}</p>
+        <a class="a" href="">Like</a>
+       <a class="a" href="">Comment</a>
+       <a class="a" href="">Share</a>
+
+
+
+        </div>
+      </div>
+    `
+
+    document.getElementById("postsContainer").appendChild(card);
+
+    // Reset form and close modal
+    document.getElementById("postForm").reset();
+    const modal = bootstrap.Modal.getInstance(document.getElementById("postModal"));
+    modal.hide();
+  };
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+});
+
+// ✅ Delete function
+function deletePost(postId) {
+  const post = document.getElementById(postId);
+  if (post) post.remove();
+}
+
+
+
