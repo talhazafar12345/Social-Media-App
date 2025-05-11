@@ -1,4 +1,123 @@
-Index.html
+Index.html Signup
+
+<div>
+    <h1>SignUp</h1>
+    <input placeholder="Enter Name" type="text" name="" id="inp">
+    <br>
+    <br>
+    <input placeholder="Enter Email" type="text" name="" id="sec">
+    <br>
+    <br>
+    <input placeholder="Enter Password" type="text" name="" id="seo">
+
+ </div>
+
+ <br>
+<br>
+
+ <button onclick="signup()">Signup</button>
+
+App.JS
+
+function signup(){
+
+
+  var getInp=document.getElementById("inp")
+  var getSec=document.getElementById("sec")
+  var getSeo=document.getElementById("seo")
+
+
+  localStorage.setItem("Name"  ,getInp.value)
+  
+  var obj={
+  
+    Name : getInp.value,
+    Email : getSec.value,
+    Password : getSeo.value
+  
+  }
+  
+  if(getInp.vallue=="" || getSec.value=="" || getSeo.value==""){
+  
+    alert("Please fill all credentials")
+  
+    getInp.value=""
+    getSec.value=""
+    getSeo.value=""
+    return
+  }
+  
+  
+  else(alert("User added successfullyf"))
+  
+  var alluser=JSON.parse(localStorage.getItem("users")) || []
+  
+  alluser.push(obj)
+  
+  localStorage.setItem("users",JSON.stringify(alluser))
+  
+  getInp.value=""
+  getSec.value=""
+  getSeo.value=""
+
+  location.href ="./login.html"
+  
+  
+  }
+
+
+Login.html
+
+<div>
+    <h1>SignUp</h1>
+    <input placeholder="Enter Name" type="text" name="" id="inp">
+    <br>
+    <br>
+    <input placeholder="Enter Email" type="text" name="" id="sec">
+    <br>
+    <br>
+    <input placeholder="Enter Password" type="text" name="" id="seo">
+
+ </div>
+
+ <br>
+<br>
+
+ <button onclick="signup()">Signup</button>
+
+
+APP.JS
+
+function signin() {
+    var getEmail = document.getElementById("email");
+    var getPassword = document.getElementById("password");
+  
+    // get all users from localStorage
+    var allUsers = JSON.parse(localStorage.getItem("users")) || [];
+  
+    // check if any user matches entered credentials
+    var foundUser = allUsers.find(function(user) {
+      return user.Email === getEmail.value && user.Password === getPassword.value;
+    });
+  
+    if (foundUser) {
+      alert("Signin successfully");
+      location.href = "./welcome.html";
+    } else {
+      alert("Invalid Credentials");
+      return
+    }
+  
+    getEmail.value = "";
+    getPassword.value = "";
+
+    location.href ="imagetoURL.html"
+
+    
+  }
+
+
+Index.html social media app
 
 <br>
 
@@ -13,6 +132,11 @@ Index.html
   <button onclick="window.location.reload()" type="button" class="btn btn-primary mb-4 p2" data-bs-toggle="modal" data-bs-target="#postModal">
     Delete all posts
   </button>
+
+ <button onclick="print()" type="button" class="btn btn-primary mb-4 p2" data-bs-toggle="modal">
+    Go to Signup
+  </button>
+  
   
 
   <!-- Post Cards Area -->
@@ -157,5 +281,7 @@ function deletePost(postId) {
   if (post) post.remove();
 }
 
-
+function print(){
+  location.href ="./index.html"
+}
 
